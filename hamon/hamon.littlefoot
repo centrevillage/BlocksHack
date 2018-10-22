@@ -1,0 +1,594 @@
+/*
+<metadata description="Hamon" target="Lightpad" tags="MIDI,Controller"></metadata>
+*/
+
+const int HAMON_POINT_MAX = 8; // 波紋アニメーションの最大同時表示数
+const int HAMON_TIMEOUT = 64;  // アニメーションのタイムアウト時間。これはなんとなくで決めている。チューニングの余地あり
+const int HAMON_COLOR_MAX = 7; // アニメーションカラーのバリエーション数
+const int HAMON_NOTE_MAX = 4;  // 同時に扱えるボイス数
+
+// 構造体がない・・・つらい！
+//typedef struct {
+//  int active;
+//  float x;
+//  float y;
+//  float z;
+//  int t;
+//} Hamon;
+//
+//Hamon hamons[HAMON_POINT_MAX];
+
+// 配列がない・・・つらい！
+//int hamons_active[HAMON_POINT_MAX];
+//float hamons_x[HAMON_POINT_MAX];
+//float hamons_y[HAMON_POINT_MAX];
+//float hamons_z[HAMON_POINT_MAX];
+//int hamons_t[HAMON_POINT_MAX];
+
+// 波紋アニメーションの定義
+bool hamons_0_active;
+float hamons_0_x;
+float hamons_0_y;
+float hamons_0_z;
+int hamons_0_t;
+bool hamons_1_active;
+float hamons_1_x;
+float hamons_1_y;
+float hamons_1_z;
+int hamons_1_t;
+bool hamons_2_active;
+float hamons_2_x;
+float hamons_2_y;
+float hamons_2_z;
+int hamons_2_t;
+bool hamons_3_active;
+float hamons_3_x;
+float hamons_3_y;
+float hamons_3_z;
+int hamons_3_t;
+bool hamons_4_active;
+float hamons_4_x;
+float hamons_4_y;
+float hamons_4_z;
+int hamons_4_t;
+bool hamons_5_active;
+float hamons_5_x;
+float hamons_5_y;
+float hamons_5_z;
+int hamons_5_t;
+bool hamons_6_active;
+float hamons_6_x;
+float hamons_6_y;
+float hamons_6_z;
+int hamons_6_t;
+bool hamons_7_active;
+float hamons_7_x;
+float hamons_7_y;
+float hamons_7_z;
+int hamons_7_t;
+
+// 配列っぽくアクセスするための関数
+bool getHamonActive(int index) {
+  bool active = false;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    active = hamons_0_active;
+  } else if (index == 1) {
+    active = hamons_1_active;
+  } else if (index == 2) {
+    active = hamons_2_active;
+  } else if (index == 3) {
+    active = hamons_3_active;
+  } else if (index == 4) {
+    active = hamons_4_active;
+  } else if (index == 5) {
+    active = hamons_5_active;
+  } else if (index == 6) {
+    active = hamons_6_active;
+  } else if (index == 7) {
+    active = hamons_7_active;
+  }
+  return active;
+}
+
+void setHamonActive(int index, bool active) {
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    hamons_0_active = active;
+  } else if (index == 1) {
+    hamons_1_active = active;
+  } else if (index == 2) {
+    hamons_2_active = active;
+  } else if (index == 3) {
+    hamons_3_active = active;
+  } else if (index == 4) {
+    hamons_4_active = active;
+  } else if (index == 5) {
+    hamons_5_active = active;
+  } else if (index == 6) {
+    hamons_6_active = active;
+  } else if (index == 7) {
+    hamons_7_active = active;
+  }
+}
+
+float getHamonX(int index) {
+  float x = 0.0;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    x = hamons_0_x;
+  } else if (index == 1) {
+    x = hamons_1_x;
+  } else if (index == 2) {
+    x = hamons_2_x;
+  } else if (index == 3) {
+    x = hamons_3_x;
+  } else if (index == 4) {
+    x = hamons_4_x;
+  } else if (index == 5) {
+    x = hamons_5_x;
+  } else if (index == 6) {
+    x = hamons_6_x;
+  } else if (index == 7) {
+    x = hamons_7_x;
+  }
+  return x;
+}
+
+void setHamonX(int index, float x) {
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    hamons_0_x = x;
+  } else if (index == 1) {
+    hamons_1_x = x;
+  } else if (index == 2) {
+    hamons_2_x = x;
+  } else if (index == 3) {
+    hamons_3_x = x;
+  } else if (index == 4) {
+    hamons_4_x = x;
+  } else if (index == 5) {
+    hamons_5_x = x;
+  } else if (index == 6) {
+    hamons_6_x = x;
+  } else if (index == 7) {
+    hamons_7_x = x;
+  }
+}
+
+float getHamonY(int index) {
+  float y = 0.0;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    y = hamons_0_y;
+  } else if (index == 1) {
+    y = hamons_1_y;
+  } else if (index == 2) {
+    y = hamons_2_y;
+  } else if (index == 3) {
+    y = hamons_3_y;
+  } else if (index == 4) {
+    y = hamons_4_y;
+  } else if (index == 5) {
+    y = hamons_5_y;
+  } else if (index == 6) {
+    y = hamons_6_y;
+  } else if (index == 7) {
+    y = hamons_7_y;
+  }
+  return y;
+}
+
+void setHamonY(int index, float y) {
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    hamons_0_y = y;
+  } else if (index == 1) {
+    hamons_1_y = y;
+  } else if (index == 2) {
+    hamons_2_y = y;
+  } else if (index == 3) {
+    hamons_3_y = y;
+  } else if (index == 4) {
+    hamons_4_y = y;
+  } else if (index == 5) {
+    hamons_5_y = y;
+  } else if (index == 6) {
+    hamons_6_y = y;
+  } else if (index == 7) {
+    hamons_7_y = y;
+  }
+}
+
+float getHamonZ(int index) {
+  float z = 0.0;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    z = hamons_0_z;
+  } else if (index == 1) {
+    z = hamons_1_z;
+  } else if (index == 2) {
+    z = hamons_2_z;
+  } else if (index == 3) {
+    z = hamons_3_z;
+  } else if (index == 4) {
+    z = hamons_4_z;
+  } else if (index == 5) {
+    z = hamons_5_z;
+  } else if (index == 6) {
+    z = hamons_6_z;
+  } else if (index == 7) {
+    z = hamons_7_z;
+  }
+  return z;
+}
+
+void setHamonZ(int index, float z) {
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    hamons_0_z = z;
+  } else if (index == 1) {
+    hamons_1_z = z;
+  } else if (index == 2) {
+    hamons_2_z = z;
+  } else if (index == 3) {
+    hamons_3_z = z;
+  } else if (index == 4) {
+    hamons_4_z = z;
+  } else if (index == 5) {
+    hamons_5_z = z;
+  } else if (index == 6) {
+    hamons_6_z = z;
+  } else if (index == 7) {
+    hamons_7_z = z;
+  }
+}
+
+int getHamonT(int index) {
+  int t = 0;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    t = hamons_0_t;
+  } else if (index == 1) {
+    t = hamons_1_t;
+  } else if (index == 2) {
+    t = hamons_2_t;
+  } else if (index == 3) {
+    t = hamons_3_t;
+  } else if (index == 4) {
+    t = hamons_4_t;
+  } else if (index == 5) {
+    t = hamons_5_t;
+  } else if (index == 6) {
+    t = hamons_6_t;
+  } else if (index == 7) {
+    t = hamons_7_t;
+  }
+  return t;
+}
+
+void setHamonT(int index, int t) {
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    hamons_0_t = t;
+  } else if (index == 1) {
+    hamons_1_t = t;
+  } else if (index == 2) {
+    hamons_2_t = t;
+  } else if (index == 3) {
+    hamons_3_t = t;
+  } else if (index == 4) {
+    hamons_4_t = t;
+  } else if (index == 5) {
+    hamons_5_t = t;
+  } else if (index == 6) {
+    hamons_6_t = t;
+  } else if (index == 7) {
+    hamons_7_t = t;
+  }
+}
+
+int hamon_idx;
+
+//int hamon_colors[HAMON_COLOR_MAX] = {
+//  0xFFE60012,
+//  0xFFF39800,
+//  0xFFFFF100,
+//  0xFF009944,
+//  0xFF0068B7,
+//  0xFF1D2088,
+//  0xFF920783,
+//  0xFFFFFFFF,
+//};
+
+// アニメーションカラー
+const int hamon_colors_0 = 0xFFE60012;
+const int hamon_colors_1 = 0xFFF39800;
+const int hamon_colors_2 = 0xFFFFF100;
+const int hamon_colors_3 = 0xFF009944;
+const int hamon_colors_4 = 0xFF0068B7;
+const int hamon_colors_5 = 0xFF1D2088;
+const int hamon_colors_6 = 0xFF920783;
+
+int getHamonColor(int index) {
+  int color = 0;
+  // switch 文がない・・・つらい！
+  if (index == 0) {
+    color = hamon_colors_0;
+  } else if (index == 1) {
+    color = hamon_colors_1;
+  } else if (index == 2) {
+    color = hamon_colors_2;
+  } else if (index == 3) {
+    color = hamon_colors_3;
+  } else if (index == 4) {
+    color = hamon_colors_4;
+  } else if (index == 5) {
+    color = hamon_colors_5;
+  } else if (index == 6) {
+    color = hamon_colors_6;
+  }
+  return color;
+}
+
+// touch index と Note Event の対応関係を保持する変数
+int hamon_note_0_ch;
+int hamon_note_0_no;
+int hamon_note_1_ch;
+int hamon_note_1_no;
+int hamon_note_2_ch;
+int hamon_note_2_no;
+int hamon_note_3_ch;
+int hamon_note_3_no;
+
+int getHamonNoteNo(int index) {
+  int note_no = 0;
+  if (index == 0) {
+    note_no = hamon_note_0_no;
+  } else if (index == 1) {
+    note_no = hamon_note_1_no;
+  } else if (index == 2) {
+    note_no = hamon_note_2_no;
+  } else if (index == 3) {
+    note_no = hamon_note_3_no;
+  }
+  return note_no;
+}
+
+void setHamonNoteNo(int index, int note_no) {
+  if (index == 0) {
+    hamon_note_0_no = note_no;
+  } else if (index == 1) {
+    hamon_note_1_no = note_no;
+  } else if (index == 2) {
+    hamon_note_2_no = note_no;
+  } else if (index == 3) {
+    hamon_note_3_no = note_no;
+  }
+}
+
+int getHamonNoteCh(int index) {
+  int note_ch = 0;
+  if (index == 0) {
+    note_ch = hamon_note_0_ch;
+  } else if (index == 1) {
+    note_ch = hamon_note_1_ch;
+  } else if (index == 2) {
+    note_ch = hamon_note_2_ch;
+  } else if (index == 3) {
+    note_ch = hamon_note_3_ch;
+  }
+  return note_ch;
+}
+
+void setHamonNoteCh(int index, int note_ch) {
+  if (index == 0) {
+    hamon_note_0_ch = note_ch;
+  } else if (index == 1) {
+    hamon_note_1_ch = note_ch;
+  } else if (index == 2) {
+    hamon_note_2_ch = note_ch;
+  } else if (index == 3) {
+    hamon_note_3_ch = note_ch;
+  }
+}
+
+// 始めにタッチした位置を保持する変数
+float hamon_touch_0_x;
+float hamon_touch_0_y;
+float hamon_touch_1_x;
+float hamon_touch_1_y;
+float hamon_touch_2_x;
+float hamon_touch_2_y;
+float hamon_touch_3_x;
+float hamon_touch_3_y;
+
+float getHamonTouchX(int index) {
+  float touch_x = 0;
+  if (index == 0) {
+    touch_x = hamon_touch_0_x;
+  } else if (index == 1) {
+    touch_x = hamon_touch_1_x;
+  } else if (index == 2) {
+    touch_x = hamon_touch_2_x;
+  } else if (index == 3) {
+    touch_x = hamon_touch_3_x;
+  }
+  return touch_x;
+}
+
+void setHamonTouchX(int index, float touch_x) {
+  if (index == 0) {
+    hamon_touch_0_x = touch_x;
+  } else if (index == 1) {
+    hamon_touch_1_x = touch_x;
+  } else if (index == 2) {
+    hamon_touch_2_x = touch_x;
+  } else if (index == 3) {
+    hamon_touch_3_x = touch_x;
+  }
+}
+
+float getHamonTouchY(int index) {
+  float touch_y = 0.0;
+  if (index == 0) {
+    touch_y = hamon_touch_0_y;
+  } else if (index == 1) {
+    touch_y = hamon_touch_1_y;
+  } else if (index == 2) {
+    touch_y = hamon_touch_2_y;
+  } else if (index == 3) {
+    touch_y = hamon_touch_3_y;
+  }
+  return touch_y;
+}
+
+void setHamonTouchY(int index, float touch_y) {
+  if (index == 0) {
+    hamon_touch_0_y = touch_y;
+  } else if (index == 1) {
+    hamon_touch_1_y = touch_y;
+  } else if (index == 2) {
+    hamon_touch_2_y = touch_y;
+  } else if (index == 3) {
+    hamon_touch_3_y = touch_y;
+  }
+}
+
+void addHamonPoint(float x, float y, float z) {
+  //Hamon hamon;
+  //hamon.active = 1;
+  //hamon.x = x;
+  //hamon.y = y;
+  //hamon.z = z;
+  //hamon.t = 0;
+  //hamons[hamon_idx] = hamon;
+
+  setHamonActive(hamon_idx, true);
+  setHamonX(hamon_idx, x);
+  setHamonY(hamon_idx, y);
+  setHamonZ(hamon_idx, z);
+  setHamonT(hamon_idx, 0);
+
+  hamon_idx = (hamon_idx + 1) % HAMON_POINT_MAX;
+}
+
+void initialise() {
+  hamon_idx = 0;
+
+  hamons_0_active = false;
+  hamons_0_x = 0.0;
+  hamons_0_y = 0.0;
+  hamons_0_z = 0.0;
+  hamons_0_t = 0;
+  hamons_1_active = false;
+  hamons_1_x = 0.0;
+  hamons_1_y = 0.0;
+  hamons_1_z = 0.0;
+  hamons_1_t = 0;
+  hamons_2_active = false;
+  hamons_2_x = 0.0;
+  hamons_2_y = 0.0;
+  hamons_2_z = 0.0;
+  hamons_2_t = 0;
+  hamons_3_active = false;
+  hamons_3_x = 0.0;
+  hamons_3_y = 0.0;
+  hamons_3_z = 0.0;
+  hamons_3_t = 0;
+  hamons_4_active = false;
+  hamons_4_x = 0.0;
+  hamons_4_y = 0.0;
+  hamons_4_z = 0.0;
+  hamons_4_t = 0;
+  hamons_5_active = false;
+  hamons_5_x = 0.0;
+  hamons_5_y = 0.0;
+  hamons_5_z = 0.0;
+  hamons_5_t = 0;
+  hamons_6_active = false;
+  hamons_6_x = 0.0;
+  hamons_6_y = 0.0;
+  hamons_6_z = 0.0;
+  hamons_6_t = 0;
+  hamons_7_active = false;
+  hamons_7_x = 0.0;
+  hamons_7_y = 0.0;
+  hamons_7_z = 0.0;
+  hamons_7_t = 0;
+}
+
+void touchStart(int index, float x, float y, float z, float vz) {
+  addHamonPoint(x, y, z);
+  if (index < HAMON_NOTE_MAX) {
+    setHamonNoteCh(index, index);
+    setHamonNoteNo(index, int(map(x, 0.07, 1.93, 64.0-12.0, 64.0+12.0))); // とりあえず2オクターブ分にマッピング
+    sendPitchBend(getHamonNoteCh(index), int(map(0.0, -1.0, 1.0, 0.0, 16383.0)));
+    sendNoteOn(getHamonNoteCh(index), getHamonNoteNo(index), 100); // ベロシティ固定 100
+    setHamonTouchX(index, x);
+    setHamonTouchY(index, y);
+  }
+}
+
+void touchMove(int index, float x, float y, float z, float vz) {
+  if (index < HAMON_NOTE_MAX) {
+    int midi_ch = getHamonNoteCh(index);
+
+    sendCC(midi_ch, 1, int(map(z, 0.0, 1.0, 0.0, 127.0))); // modulation
+
+    // ピッチベンドに関してはチューニング不足かも
+    float pitchbend = getHamonTouchY(index) - y;
+    if (abs(pitchbend) > 0.05) {
+      sendPitchBend(midi_ch, int(map(pitchbend, -1.0, 1.0, 0.0, 16383.0)));
+    }
+
+    // X軸の動きが閾値以上ならノートをリトリガー
+    float note_span = getHamonTouchX(index) - x;
+    if (abs(note_span) > 1.0/12.0) {
+      sendNoteOff(getHamonNoteCh(index), getHamonNoteNo(index), 0);
+      setHamonNoteNo(index, int(map(x, 0.07, 1.93, 64.0-12.0, 64.0+12.0))); // とりあえず2オクターブ分にマッピング
+      sendNoteOn(getHamonNoteCh(index), getHamonNoteNo(index), 100); // ベロシティ固定 100
+      // TODO: setHamonTouchX でXの値を更新した方が良いかも
+    }
+  }
+}
+
+void touchEnd(int index, float x, float y, float z, float vz) {
+  if (index < HAMON_NOTE_MAX) {
+    sendNoteOff(getHamonNoteCh(index), getHamonNoteNo(index), 0);
+  }
+}
+
+int getHamonColorByTime(int time) {
+  return getHamonColor((time / 2) % HAMON_COLOR_MAX);
+}
+
+float getHamonRadiusByTime(int time) {
+  return (float(time)) / 2.0;
+}
+
+void drawHamons() {
+  for (int i=0; i<HAMON_POINT_MAX; ++i) {
+    if (getHamonActive(i)) {
+      // なんとなく8.0掛けているが、座標系がよくわかっていない・・・
+      blendCircle(getHamonColorByTime(getHamonT(i)), getHamonX(i) * 8.0, getHamonY(i) * 8.0, getHamonRadiusByTime(getHamonT(i)), false);
+    }
+  }
+}
+
+void updateHamons() {
+  for (int i=0; i<HAMON_POINT_MAX; ++i) {
+    if (getHamonActive(i)) {
+      setHamonT(i, getHamonT(i) + 1);
+      if (getHamonT(i) > HAMON_TIMEOUT) {
+        setHamonActive(i, false);
+      }
+    }
+  }
+}
+
+void repaint() {
+  clearDisplay();
+  drawHamons();
+  updateHamons();
+}
